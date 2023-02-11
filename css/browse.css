@@ -19,16 +19,66 @@
   min-width: 40%;
 } */
 
+/* Search bar */
 .search {
   display: flex;
+  width: 70vw;
+
+  font-size: 1.2rem;
 }
 
 select {
   font-family: inherit;
+  font-size: 1em;
+
+  border-radius: 999px 0 0 999px;
+  border: none;
+
+  transition: box-shadow 0.25s ease 0s;
+  padding: 1rem 2rem;
+  background: linear-gradient(117deg, rgb(254, 145, 80), rgb(254, 100, 70));
 }
 
+select:hover,
+select:focus {
+  background: linear-gradient(117deg, rgb(248, 137, 73), rgb(248, 82, 49));
+  box-shadow: 0 0.1rem 0.8rem rgb(254, 100, 70);
+}
+
+.search input {
+  border-radius: 0;
+  border: 1px solid #999;
+  border-left: none;
+  border-right: none;
+
+  flex-grow: 1;
+  padding: 0 1rem;
+  transition: box-shadow 0.25s ease 0s;
+  font-size: inherit;
+}
+
+.search input:hover,
+.search input:focus-within {
+  outline: none;
+  box-shadow: 0 0.1rem 0.8rem rgb(254, 100, 70);
+}
+
+.search button {
+  padding: 1rem 2rem;
+  border-radius: 0 999px 999px 0;
+}
+
+.search-icon {
+  display: block;
+  height: 1rem;
+  aspect-ratio: 1;
+  background-image: url(../img/magnifying-glass.svg);
+  background-position: center;
+}
+
+/* Table */
 .table {
-  display: table;
+  display: block;
 
   max-width: 80vw;
 
@@ -52,7 +102,12 @@ select {
   text-align: left;
 }
 
+.td:first-child {
+  min-width: 50%;
+}
+
 .th {
-  background-color: #ddd;
+  color: #999;
+  font-family: sans-serif;
   font-weight: bold;
 }
