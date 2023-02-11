@@ -1,0 +1,12 @@
+.main-content .buttons-container {
+  margin-top: 8vh;
+  width: 600px;
+  max-width: 80%;
+
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.main-content button {
+  width: 10rem;
+}

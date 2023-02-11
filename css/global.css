@@ -1,0 +1,261 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=ABeeZee&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 600px) {
+  :root {
+    font-size: 13px;
+  }
+}
+
+body {
+  font-family: Rubik, sans-serif;
+  padding-top: 30vh;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: ABeeZee, Helvetica, sans-serif;
+}
+
+.content {
+  min-height: 70vh;
+  background: white;
+  box-shadow: 0 0 200px #000;
+
+  position: relative;
+}
+
+.logo {
+  display: block;
+  width: 15vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid #555;
+  box-shadow: 0 0 5px #0005;
+
+  background-image: url(../img/logo.png);
+  background-size: cover;
+  background-position: center;
+
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+.background {
+  position: fixed;
+  z-index: -10000;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 30vh;
+
+  background-image: url(../img/bg1.jpg);
+  background-size: cover;
+  background-position: center 0;
+}
+
+button.home-button {
+  width: 40px;
+  aspect-ratio: 1;
+  border-radius: 10px;
+
+  background-image: url(../img/house.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 40%;
+  
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  left: 20px;
+  translate: 0 -50%;
+}
+
+button.home-button:hover,
+button.home-button:focus {
+  background-image: url(../img/house.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 40%;
+  box-shadow: 0 0.1rem 0.8rem rgb(254, 100, 70);
+}
+
+.main-content {
+  padding-top: 10vmax;
+  padding-bottom: 10vmax;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  font-size: 1.8rem;
+}
+
+.main-content h1 {
+  opacity: 0;
+  margin: 0;
+  margin-bottom: 5vh;
+  animation: slide-right 0.5s ease-out forwards;
+}
+
+.main-content p {
+  opacity: 0;
+  max-width: 50vw;
+  color: #777;
+  animation: slide-right 0.5s ease-out 0.5s forwards;
+}
+
+@keyframes slide-right {
+  0% {
+    opacity: 0;
+    translate: -100px;
+  }
+  100% {
+    opacity: 1;
+    translate: 0;
+  }
+}
+
+footer {
+  background: #ddd;
+  min-height: 40vh;
+}
+
+/* button */
+button {
+  border-radius: 999px;
+  padding: 1em 2em;
+  background: linear-gradient(117deg, rgb(254, 145, 80), rgb(254, 100, 70));
+  border: none;
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease 0s;
+  letter-spacing: 0.08rem;
+}
+
+button:hover,
+button:focus {
+  background: linear-gradient(117deg, rgb(248, 137, 73), rgb(248, 82, 49));
+  box-shadow: 0 0.1rem 0.8rem rgb(254, 100, 70);
+}
+
+/* input group */
+.group {
+  margin-top: 2rem;
+  position: relative;
+}
+
+.input {
+  font-size: 16px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #515151;
+  background: transparent;
+  overflow: hidden;
+}
+
+.input:focus {
+  outline: none;
+}
+
+label {
+  white-space: nowrap;
+  color: #999;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.input:focus ~ label,
+.input.compiled ~ label {
+  top: -20px;
+  font-size: 14px;
+  color: #5264ae;
+}
+
+.input[required] ~ label::after {
+  content: " *";
+  color: #d55;
+}
+
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.bar::before,
+.bar::after {
+  content: "";
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #5264ae;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.bar::before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+.input:focus ~ .bar::before,
+.input:focus ~ .bar::after {
+  width: 50%;
+}
+
+.highlight {
+  position: absolute;
+  height: 60%;
+  width: 100%;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.input:focus ~ .highlight {
+  animation: inputHighlighter 0.5s ease;
+}
+
+@keyframes inputHighlighter {
+  from {
+    background: #5264ae;
+  }
+
+  to {
+    width: 0;
+  }
+}

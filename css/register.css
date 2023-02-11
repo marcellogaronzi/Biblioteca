@@ -1,0 +1,21 @@
+form {
+  width: 900px;
+  max-width: 80vw;
+}
+
+.input-group {
+  width: calc(100% - 3rem);
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-column-gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.input[type="date"] {
+  color: transparent;
+}
+
+.input[type="date"]:focus,
+.input[type="date"].compiled {
+  color: #000;
+}
