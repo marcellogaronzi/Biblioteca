@@ -3,12 +3,22 @@ form {
   max-width: 80vw;
 }
 
+h5 {
+  color: #888;
+  font-size: 0.65em;
+  text-align: left;
+  text-decoration: underline;
+
+  padding-left: 1rem;
+  margin-top: 1rem;
+}
+
 .input-group {
-  width: calc(100% - 3rem);
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 50%);
+  grid-template-columns: 1fr 1fr;
   grid-column-gap: 3rem;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .input[type="date"] {

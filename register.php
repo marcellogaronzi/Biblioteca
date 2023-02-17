@@ -15,16 +15,19 @@
 
 <body>
   <div class="background"></div>
-  <a href="./index.html">
-    <button class="home-button"></button>
-  </a>
 
   <div class="content">
+    <a href="./index.php">
+      <button class="home-button"></button>
+    </a>
+
     <span class="logo"></span>
+    
     <div class="main-content">
       <h1>Registrazione</h1>
 
       <form method="post">
+        <h5>Dati anagrafici</h5>
         <div class="input-group">
           <div class="group">
             <input required type="text" class="input" name="lastName">
@@ -63,6 +66,7 @@
             <label>Telefono</label>
           </div>
         </div>
+        <h5>Credenziali</h5>
         <div class="input-group">
           <div class="group">
             <input type="email" class="input" name="email">

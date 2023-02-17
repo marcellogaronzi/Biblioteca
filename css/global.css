@@ -68,7 +68,7 @@ h6 {
 }
 
 button.home-button {
-  width: 40px;
+  width: 30px;
   aspect-ratio: 1;
   border-radius: 10px;
 
@@ -77,11 +77,10 @@ button.home-button {
   background-repeat: no-repeat;
   background-size: 40%;
   
-  position: fixed;
+  position: absolute;
   z-index: 1000;
-  top: 50%;
-  left: 20px;
-  translate: 0 -50%;
+  top: 10px;
+  left: 10px;
 }
 
 button.home-button:hover,
