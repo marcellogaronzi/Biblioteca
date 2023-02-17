@@ -1,68 +1,58 @@
 <?php
-require "db.php";
+require_once("db.php");
 
-// TODO
-
-class TitleService
+class UsersService
 {
-  static function get_all()
+  static function get_by_username($username)
   {
     global $db;
-    $sql = "SELECT * FROM titoli";
-    $result = $db->query($sql);
+    $result = $db->query("SELECT * FROM utenti WHERE username=$username");
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
-  static function get_by_id($id)
+  static function create($username, $password, $cf, $first_name, $last_name, $birth_date, $email=NULL, $phone=NULL, $address=NULL)
   {
     global $db;
-    $result = $db->query("SELECT * FROM titoli WHERE id_titolo=$id");
-    return $result->fetch_all(MYSQLI_ASSOC);
-  }
-
-  static function create($ticker, $name, $description, $start, $end)
-  {
-    global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("INSERT INTO titoli VALUES (0, ?, ?, ?, ?, ?)");
+    // Prepare
+    $stmt = $db->prepare("INSERT INTO utenti VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
-    $stmt->bind_param("sssss", $ticker, $name, $description, $start, $end);
+    $stmt->bind_param("sssssssss", $username, $password, $cf, $first_name, $last_name, $birth_date, $email, $phone, $address);
     
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
 
-    return $db->insert_id;
+    return $username;
   }
 
-  static function update($id, $ticker, $name, $description = NULL, $start, $end)
+  static function update($username, $password, $cf, $first_name, $last_name, $birth_date, $email=NULL, $phone=NULL, $address=NULL)
   {
     global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("UPDATE titoli SET ticker=?, nome=?, descrizione=?, inizio=?, fine=? WHERE id_titolo=?");
+    // Prepare
+    $stmt = $db->prepare("UPDATE utenti SET password=?, cf=?, nome=?, cognome=?, dataN=?, email=?, cell=?, indirizzo=? WHERE username=?");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
     
     // Bind
-    $stmt->bind_param("sssssi", $ticker, $name, $description, $start, $end, $id);
+    $stmt->bind_param("sssssssss", $password, $cf, $first_name, $last_name, $birth_date, $email, $phone, $address, $username);
     
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }
 
-  static function delete($id)
+  static function delete($username)
   {
     global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("DELETE FROM titoli WHERE id_titolo=?");
+    // Prepare
+    $stmt = $db->prepare("DELETE FROM utenti WHERE username=?");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("s", $username);
     
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }

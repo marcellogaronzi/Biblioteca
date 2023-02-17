@@ -1,63 +1,52 @@
 <?php
-require "db.php";
+require_once("db.php");
 
 // TODO
 
-class DataService
+class AuthorsService
 {
+  static function get_all()
+  {
+    global $db;
+    $result = $db->query("SELECT * FROM autori");
+    return $result->fetch_all(MYSQLI_ASSOC);
+  }
+
   static function get_by_id($id)
   {
     global $db;
-    $result = $db->query("SELECT * FROM dati_titoli WHERE id=$id");
+    $result = $db->query("SELECT * FROM autori WHERE idAutore=$id");
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
-  static function get_by_title($id_titolo)
+  static function create($first_name, $last_name, $nationality, $birthYear)
   {
     global $db;
-    $result = $db->query("SELECT * FROM dati_titoli WHERE id_titolo=$id_titolo");
-    return $result->fetch_all(MYSQLI_ASSOC);
-  }
-
-  static function get_by_title_by_date($title_id, $begin, $end)
-  {
-    global $db;
-    $result = $db->query(
-      "SELECT D.*
-      FROM titoli, dati_titoli AS D
-      WHERE titoli.id_titolo=D.id_titolo AND D.id_titolo=$title_id AND D.date BETWEEN \"$begin\" AND \"$end\""
-    );
-    return $result->fetch_all(MYSQLI_ASSOC);
-  }
-
-  static function create($date, $open, $high, $low, $close, $adj_close, $volume, $title_id)
-  {
-    global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("INSERT INTO dati_titoli VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)");
+    // Prepare
+    $stmt = $db->prepare("INSERT INTO autori VALUES (0, ?, ?, ?, ?)");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
-    $stmt->bind_param("sdddddii", $date, $open, $high, $low, $close, $adj_close, $volume, $title_id);
+    $stmt->bind_param("sssi", $first_name, $last_name, $nationality, $birthYear);
 
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
     
     return $db->insert_id;
   }
 
-  static function update($id, $date, $open, $high, $low, $close, $adj_close, $volume, $title_id)
+  static function update($id, $first_name, $last_name, $nationality, $birthYear)
   {
     global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("UPDATE dati_titoli SET date=?, open=?, high=?, low=?, close=?, adj_close=?, volume=?, id_titolo=? WHERE id=?");
+    // Prepare
+    $stmt = $db->prepare("UPDATE autori SET nome=?, cognome=?, nazionalita=?, annoN=? WHERE idAutore=?");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
-    $stmt->bind_param("sdddddiii", $date, $open, $high, $low, $close, $adj_close, $volume, $title_id, $id);
+    $stmt->bind_param("sssii", $first_name, $last_name, $nationality, $birthYear, $id);
 
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }
@@ -65,29 +54,14 @@ class DataService
   static function delete($id)
   {
     global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("DELETE FROM dati_titoli WHERE id=?");
+    // Prepare
+    $stmt = $db->prepare("DELETE FROM autori WHERE idAutore=?");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
     $stmt->bind_param("i", $id);
     
-    // Check if execution succeeded
-    $status = $stmt->execute();
-    if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
-  }
-
-  static function delete_by_title($title_id)
-  {
-    global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("DELETE FROM dati_titoli WHERE id_titolo=?");
-    if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
-
-    // Bind
-    $stmt->bind_param("i", $title_id);
-    
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }

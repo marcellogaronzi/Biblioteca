@@ -1,93 +1,87 @@
 <?php
-require "db.php";
+require_once("db.php");
 
-// TODO
-
-class DataService
+class BooksService
 {
-  static function get_by_id($id)
+  static function get_all()
   {
     global $db;
-    $result = $db->query("SELECT * FROM dati_titoli WHERE id=$id");
+    $result = $db->query("SELECT * FROM dati_titoli");
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
-  static function get_by_title($id_titolo)
+  static function get_by_isbn($isbn)
   {
     global $db;
-    $result = $db->query("SELECT * FROM dati_titoli WHERE id_titolo=$id_titolo");
+    $result = $db->query("SELECT * FROM libri WHERE isbn LIKE '%$isbn%'");
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
-  static function get_by_title_by_date($title_id, $begin, $end)
+  static function get_by_title($titolo)
+  {
+    global $db;
+    $result = $db->query("SELECT * FROM libri WHERE titolo LIKE '%$titolo%'");
+    return $result->fetch_all(MYSQLI_ASSOC);
+  }
+
+  static function get_by_author($author)
   {
     global $db;
     $result = $db->query(
-      "SELECT D.*
-      FROM titoli, dati_titoli AS D
-      WHERE titoli.id_titolo=D.id_titolo AND D.id_titolo=$title_id AND D.date BETWEEN \"$begin\" AND \"$end\""
+      "SELECT L.*
+      FROM libri L, scritture S, autori A
+      WHERE L.isbn=S.isbn AND S.idAutore=A.idAutore AND (A.nome LIKE '%$author%' OR A.cognome LIKE '%$author%')"
     );
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
-  static function create($date, $open, $high, $low, $close, $adj_close, $volume, $title_id)
+  static function create($isbn, $title, $n_pages, $price, $publishing_house)
   {
     global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("INSERT INTO dati_titoli VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)");
+    // Prepare
+    $stmt = $db->prepare("INSERT INTO libri VALUES (?, ?, ?, ?, ?)");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
-    $stmt->bind_param("sdddddii", $date, $open, $high, $low, $close, $adj_close, $volume, $title_id);
+    $stmt->bind_param("ssids", $isbn, $title, $n_pages, $price, $publishing_house);
 
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
-    
-    return $db->insert_id;
+
+    return $isbn;
   }
 
-  static function update($id, $date, $open, $high, $low, $close, $adj_close, $volume, $title_id)
+  static function update($isbn, $title, $n_pages, $price, $publishing_house)
   {
     global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("UPDATE dati_titoli SET date=?, open=?, high=?, low=?, close=?, adj_close=?, volume=?, id_titolo=? WHERE id=?");
+    // Prepare
+    $stmt = $db->prepare(
+      "UPDATE libri 
+      SET titolo=?, nPag=?, prezzo=?, casaEd=? 
+      WHERE isbn=?"
+    );
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
-    $stmt->bind_param("sdddddiii", $date, $open, $high, $low, $close, $adj_close, $volume, $title_id, $id);
+    $stmt->bind_param("sidss", $title, $n_pages, $price, $publishing_house, $isbn);
 
-    // Check if execution succeeded
-    $status = $stmt->execute();
-    if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
-  }
-
-  static function delete($id)
-  {
-    global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("DELETE FROM dati_titoli WHERE id=?");
-    if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
-
-    // Bind
-    $stmt->bind_param("i", $id);
-    
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }
 
-  static function delete_by_title($title_id)
+  static function delete($isbn)
   {
     global $db;
-    // Check if prepare succeeded
-    $stmt = $db->prepare("DELETE FROM dati_titoli WHERE id_titolo=?");
+    // Prepare
+    $stmt = $db->prepare("DELETE FROM libri WHERE isbn=?");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
-    $stmt->bind_param("i", $title_id);
-    
-    // Check if execution succeeded
+    $stmt->bind_param("s", $isbn);
+
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }

@@ -1,5 +1,5 @@
 <?php
-require "db.php";
+require_once("db.php");
 
 // TODO
 
@@ -33,14 +33,14 @@ class DataService
   static function create($date, $open, $high, $low, $close, $adj_close, $volume, $title_id)
   {
     global $db;
-    // Check if prepare succeeded
+    // Prepare
     $stmt = $db->prepare("INSERT INTO dati_titoli VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
     $stmt->bind_param("sdddddii", $date, $open, $high, $low, $close, $adj_close, $volume, $title_id);
 
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
     
@@ -50,14 +50,14 @@ class DataService
   static function update($id, $date, $open, $high, $low, $close, $adj_close, $volume, $title_id)
   {
     global $db;
-    // Check if prepare succeeded
+    // Prepare
     $stmt = $db->prepare("UPDATE dati_titoli SET date=?, open=?, high=?, low=?, close=?, adj_close=?, volume=?, id_titolo=? WHERE id=?");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
     $stmt->bind_param("sdddddiii", $date, $open, $high, $low, $close, $adj_close, $volume, $title_id, $id);
 
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }
@@ -65,14 +65,14 @@ class DataService
   static function delete($id)
   {
     global $db;
-    // Check if prepare succeeded
+    // Prepare
     $stmt = $db->prepare("DELETE FROM dati_titoli WHERE id=?");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
     $stmt->bind_param("i", $id);
     
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }
@@ -80,14 +80,14 @@ class DataService
   static function delete_by_title($title_id)
   {
     global $db;
-    // Check if prepare succeeded
+    // Prepare
     $stmt = $db->prepare("DELETE FROM dati_titoli WHERE id_titolo=?");
     if ($stmt === false) trigger_error($db->error, E_USER_ERROR);
 
     // Bind
     $stmt->bind_param("i", $title_id);
     
-    // Check if execution succeeded
+    // Execute
     $status = $stmt->execute();
     if ($status === false) trigger_error($stmt->error, E_USER_ERROR);
   }
