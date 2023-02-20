@@ -18,7 +18,7 @@
   session_start();
 
   if (isset($_SESSION["session_id"])) {
-    header("Location: browse.html");
+    header("Location: browse.php");
     exit;
   }
 
@@ -44,7 +44,7 @@
       $_SESSION['session_id'] = session_id();
       $_SESSION['session_user'] = $user['username'];
 
-      header('Location: browse.html');
+      header('Location: browse.php');
       exit;
     }
   }

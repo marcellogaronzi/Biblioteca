@@ -6,21 +6,30 @@ class BooksService
   static function get_all()
   {
     global $db;
-    $result = $db->query("SELECT * FROM dati_titoli");
+    $result = $db->query(
+      "SELECT L.*, CONCAT(A.nome, ' ', A.cognome) autore
+      FROM libri L, scritture S, autori A
+      WHERE L.isbn=S.isbn AND S.idAutore=A.idAutore");
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
   static function get_by_isbn($isbn)
   {
     global $db;
-    $result = $db->query("SELECT * FROM libri WHERE isbn LIKE '%$isbn%'");
+    $result = $db->query(
+      "SELECT L.*, CONCAT(A.nome, ' ', A.cognome) autore
+      FROM libri L, scritture S, autori A
+      WHERE L.isbn=S.isbn AND S.idAutore=A.idAutore AND L.isbn LIKE '%$isbn%'");
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
   static function get_by_title($titolo)
   {
     global $db;
-    $result = $db->query("SELECT * FROM libri WHERE titolo LIKE '%$titolo%'");
+    $result = $db->query(
+      "SELECT L.*, CONCAT(A.nome, ' ', A.cognome) autore
+      FROM libri L, scritture S, autori A
+      WHERE L.isbn=S.isbn AND S.idAutore=A.idAutore AND L.titolo LIKE '%$titolo%'");
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
@@ -28,9 +37,9 @@ class BooksService
   {
     global $db;
     $result = $db->query(
-      "SELECT L.*
+      "SELECT L.*, CONCAT(A.nome, ' ', A.cognome) autore
       FROM libri L, scritture S, autori A
-      WHERE L.isbn=S.isbn AND S.idAutore=A.idAutore AND (A.nome LIKE '%$author%' OR A.cognome LIKE '%$author%')"
+      WHERE L.isbn=S.isbn AND S.idAutore=A.idAutore AND CONCAT(A.nome, ' ', A.cognome) LIKE '%$author%'"
     );
     return $result->fetch_all(MYSQLI_ASSOC);
   }
