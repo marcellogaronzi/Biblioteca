@@ -14,6 +14,42 @@
 </head>
 
 <body>
+  <?php
+  session_start();
+
+  if (isset($_SESSION["session_id"])) {
+    header("Location: browse.html");
+    exit;
+  }
+
+  require_once "backend/users_service.php";
+
+  // Validate user
+  $error = "";
+  if (isset($_POST["submit"])) {
+    // Get inputs
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    // Get user from database
+    $user = UsersService::get_by_username($username);
+    $user = reset($user);
+
+    if (!$user || password_verify($password, $user['password']) === false) {
+      // Invalid credentials
+      $error = "Nome utente o password errati.";
+    } else {
+      // Init session and redirect to reserved area
+      session_regenerate_id();
+      $_SESSION['session_id'] = session_id();
+      $_SESSION['session_user'] = $user['username'];
+
+      header('Location: browse.html');
+      exit;
+    }
+  }
+  ?>
+
   <div class="background"></div>
 
   <div class="content">
@@ -22,7 +58,7 @@
     </a>
 
     <span class="logo"></span>
-    
+
     <div class="main-content">
       <h1>Accedi</h1>
       <form method="post">
@@ -38,7 +74,8 @@
           <span class="bar"></span>
           <label>Password</label>
         </div>
-        <button type="submit">Accedi</button>
+        <div class="error-msg" style="width: 100%"><?php echo $error ?></div>
+        <button type="submit" name="submit">Accedi</button>
       </form>
     </div>
   </div>

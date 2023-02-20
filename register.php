@@ -42,7 +42,7 @@
         $birthDate = $_POST["birthDate"];
         $address = $_POST["address"] ?? null;
         $phone = $_POST["phone"] ?? null;
-        $email = $_POST["email"] ?? null;;
+        $email = $_POST["email"] ?? null;
         $username = $_POST["username"];
         $password = $_POST["password"];
         $confirmPassword = $_POST["confirmPassword"];
@@ -178,7 +178,7 @@
 
           <p>Complimenti, sei riuscito a registrarti con successo. Procedi pure con l'accesso all'area riservata.</p>
 
-          <a href="login.html"><button style="margin-top: 2.5rem;">Accedi</button></a>
+          <a href="login.php"><button style="margin-top: 2.5rem;">Accedi</button></a>
         <?php
         } catch (mysqli_sql_exception $e) {
         ?>

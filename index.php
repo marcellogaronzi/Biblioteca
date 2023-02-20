@@ -28,7 +28,7 @@
         in possesso di un account. Altrimenti registrati.
       </p>
       <div class="buttons-container">
-        <a href="login.html"><button>Accedi</button></a>
+        <a href="login.php"><button>Accedi</button></a>
         <a href="register.php"><button>Registrati</button></a>
       </div>
     </div>
