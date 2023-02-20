@@ -6,7 +6,7 @@ class UsersService
   static function get_by_username($username)
   {
     global $db;
-    $result = $db->query("SELECT * FROM utenti WHERE username=$username");
+    $result = $db->query("SELECT * FROM utenti WHERE username='$username'");
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
