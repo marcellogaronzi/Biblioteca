@@ -29,6 +29,9 @@
     <a href="./index.php">
       <button class="home-button"></button>
     </a>
+    <a href="./exit.php">
+      <button class="home-button" style="background-image: url(img/arrow-right-from-bracket-solid.svg); left: 80px;"></button>
+    </a>
 
     <span class="logo"></span>
 
